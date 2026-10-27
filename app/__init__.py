@@ -1,0 +1,1 @@
+"""InvoiceHub application package."""

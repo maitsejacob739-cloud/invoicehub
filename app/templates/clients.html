@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Clients · InvoiceHub{% endblock %}
+{% block content %}
+<h1>Clients</h1>
+<form class="card" method="post" action="/clients">
+  <div class="form-grid">
+    <label>Name <input name="name" required placeholder="Jane Doe"></label>
+    <label>Email <input type="email" name="email" placeholder="jane@example.com"></label>
+    <label>Company <input name="company" placeholder="Acme Studio"></label>
+  </div>
+  <button class="btn primary" type="submit">Add client</button>
+</form>
+<section class="card">
+  <table>
+    <thead>
+      <tr><th>Name</th><th>Company</th><th>Email</th><th class="num">Invoices</th><th></th></tr>
+    </thead>
+    <tbody>
+    {% for c in clients %}
+      <tr>
+        <td>{{ c.name }}</td>
+        <td>{{ c.company or '—' }}</td>
+        <td>{{ c.email or '—' }}</td>
+        <td class="num">{{ counts.get(c.id, 0) }}</td>
+        <td>
+          <form method="post" action="/clients/{{ c.id }}/delete" class="inline">
+            <button class="btn danger small" type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+    {% else %}
+      <tr><td colspan="5" class="empty">No clients yet — add your first one above.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

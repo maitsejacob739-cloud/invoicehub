@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · InvoiceHub{% endblock %}
+{% block content %}
+<h1>Dashboard</h1>
+<div class="stats">
+  <div class="card stat">
+    <span class="label">Outstanding</span>
+    <span class="value">{{ stats.outstanding|money }}</span>
+    <span class="sub">draft + sent, not yet paid</span>
+  </div>
+  <div class="card stat {{ 'warn' if stats.overdue_count else '' }}">
+    <span class="label">Overdue</span>
+    <span class="value">{{ stats.overdue|money }}</span>
+    <span class="sub">{{ stats.overdue_count }} invoice{{ 's' if stats.overdue_count != 1 else '' }} past due</span>
+  </div>
+  <div class="card stat good">
+    <span class="label">Paid</span>
+    <span class="value">{{ stats.paid|money }}</span>
+    <span class="sub">all time</span>
+  </div>
+</div>
+<div class="actions">
+  <a class="btn primary" href="/invoices/new">New invoice</a>
+  <a class="btn" href="/clients">Add client</a>
+</div>
+<section class="card">
+  <h2>Recent invoices</h2>
+  {% include "invoices_table.html" %}
+</section>
+{% endblock %}

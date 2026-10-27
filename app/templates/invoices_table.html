@@ -1,0 +1,22 @@
+<table>
+  <thead>
+    <tr>
+      <th>Number</th><th>Client</th><th>Issued</th><th>Due</th><th>Status</th><th class="num">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for inv in invoices %}
+    {% set overdue = inv.due_date and inv.status != 'paid' and inv.due_date < today %}
+    <tr>
+      <td><a href="/invoices/{{ inv.id }}">{{ inv.number }}</a></td>
+      <td>{{ inv.client.name }}</td>
+      <td>{{ inv.issue_date }}</td>
+      <td>{{ inv.due_date or '—' }}</td>
+      <td><span class="badge {{ 'overdue' if overdue else inv.status }}">{{ 'overdue' if overdue else inv.status }}</span></td>
+      <td class="num">{{ invoice_total(inv)|money }}</td>
+    </tr>
+  {% else %}
+    <tr><td colspan="6" class="empty">No invoices yet — create your first one.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
